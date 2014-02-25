@@ -1,1 +1,7 @@
-rb: ruby %
+go:  go run %
+hs:  runhaskell %
+lua: lua %
+py:  python %
+rb:  ruby %
+sh:  sh %
+zsh: zsh %
