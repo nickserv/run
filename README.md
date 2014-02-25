@@ -1,6 +1,5 @@
 # Run
-
-TODO: Write a gem description
+A simple command line tool for running individual files of source code.
 
 ## Installation
 
