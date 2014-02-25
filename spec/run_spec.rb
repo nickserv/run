@@ -14,15 +14,15 @@ describe Run do
     end
 
     context 'when a filename is given without a known extension' do
-      it { expect{ Run.start ['hello.unknown'] }.to raise_error RuntimeError }
+      it { expect { Run.start ['hello.unknown'] }.to raise_error RuntimeError }
     end
 
     context 'when a filename is given without any extension' do
-      it { expect{ Run.start ['hello'] }.to raise_error RuntimeError }
+      it { expect { Run.start ['hello'] }.to raise_error RuntimeError }
     end
 
     context 'when no filename is given' do
-      it { expect{ Run.start [] }.to raise_error RuntimeError }
+      it { expect { Run.start [] }.to raise_error RuntimeError }
     end
   end
 end
