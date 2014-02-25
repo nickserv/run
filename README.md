@@ -1,4 +1,6 @@
 # Run
+[![Build Status](https://travis-ci.org/thenickperson/run.png)](https://travis-ci.org/thenickperson/run)
+
 A simple command line tool for running individual files of source code.
 
 ## Installation
