@@ -1,3 +1,4 @@
+c:   gcc % && ./a.out
 go:  go run %
 hs:  runhaskell %
 lua: lua %
