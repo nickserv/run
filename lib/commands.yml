@@ -1,7 +1,11 @@
 c:   gcc % && ./a.out
+clj: clj %
+coffee: coffee %
 go:  go run %
 hs:  runhaskell %
+jar: java -jar %
 lua: lua %
+ml: ocaml %
 py:  python %
 rb:  ruby %
 sh:  sh %
