@@ -7,7 +7,7 @@ module Run
   def self.command_for_file(path)
     extension = File.extname(path).sub('.', '')
 
-    COMMANDS[extension].gsub('%', path) if COMMANDS.key?(extension)
+    COMMANDS[extension].sub('%', path) if COMMANDS.key?(extension)
   end
 
   def self.start(args)
