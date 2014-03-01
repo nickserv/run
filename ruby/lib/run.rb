@@ -1,8 +1,8 @@
 require 'run/version'
-require 'yaml'
+require 'json'
 
 module Run
-  COMMANDS = YAML.load_file('lib/commands.yml')
+  COMMANDS = JSON.parse IO.read 'lib/commands.json'
 
   def self.command_for_file(path)
     extension = File.extname(path).sub('.', '')
