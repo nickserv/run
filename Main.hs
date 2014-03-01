@@ -26,6 +26,4 @@ start args = case commandForExtension (head args) of
                  return ()
                Nothing -> hPutStrLn stderr "Error: Extension not found"
 
-main = do
-         args <- System.Environment.getArgs
-         start args
+main = System.Environment.getArgs >>= start
