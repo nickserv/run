@@ -19,10 +19,13 @@ commands = [ ("c", "gcc % && ./a.out"),
 commandForExtension :: String -> Maybe String
 commandForExtension extension = lookup extension commands
 
+start :: [String] -> IO ()
+start args = case commandForExtension (head args) of
+               Just command -> do
+                 System.Process.runCommand command
+                 return ()
+               Nothing -> hPutStrLn stderr "Error: Extension not found"
+
 main = do
          args <- System.Environment.getArgs
-         case commandForExtension (head args) of
-           Just command -> do
-             System.Process.runCommand command 
-             return ()
-           Nothing -> hPutStrLn stderr "Error: Extension not found"
+         start args
