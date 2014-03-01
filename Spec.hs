@@ -3,16 +3,16 @@ import Test.Hspec
 main :: IO ()
 main = hspec $ do
   describe "Run" $ do
-    describe ".command_for_file" $ do
+    describe ".commandForFile" $ do
       context "when a filename is given with a known extension" $ do
         it "should be a valid command" $ do
           Run.commandForFile "hello.rb" `shouldBe` Just "ruby hello.rb"
 
       context "when a filename is given without a known extension" $ do
-        Run.command_for_file "hello.unknown" `shouldBe` Nothing
+        Run.commandForFile "hello.unknown" `shouldBe` Nothing
 
       context "when a filename is given without any extension" $ do
-        Run.command_for_file "hello" `shouldBe` Nothing
+        Run.commandForFile "hello" `shouldBe` Nothing
 
     describe ".start" $ do
       context "when a filename is given with a known extension" $ do
