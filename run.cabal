@@ -15,6 +15,10 @@ category:            Development
 build-type:          Simple
 cabal-version:       >=1.8
 
+library
+  exposed-modules:     Main
+  build-depends:       base ==4.6.*, hspec ==1.8.*, process
+
 executable run
   main-is:             Main.hs
   -- other-modules:       
