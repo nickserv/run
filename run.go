@@ -39,14 +39,13 @@ func commandForFile(path string) (string, error) {
 
   if command := commands[extension]; command != "" {
     return strings.Replace(command, "%", path, -1), nil
-  } else {
-    return "", errors.New("Run could not determine how to run this file because it does not have a known extension.")
   }
+  return "", errors.New("run could not determine how to run this file because it does not have a known extension")
 }
 
 func start(args []string) error {
   if len(args) <= 1 {
-    return errors.New("No files given.")
+    return errors.New("no files given")
   }
   command, err := commandForFile(args[1])
   if err != nil {
