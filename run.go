@@ -3,9 +3,11 @@ package main
 import (
   "bytes"
   "encoding/json"
+  "errors"
   "fmt"
   "io/ioutil"
   "log"
+  "os"
 )
 
 type Commands map[string]string
@@ -25,10 +27,20 @@ func getCommands() (Commands, error) {
   return commands, nil
 }
 
-func main() {
+func start(args []string) error {
+  if len(args) <= 1 {
+    return errors.New("No files given.")
+  }
   commands, err := getCommands()
   if err != nil {
     log.Fatal(err)
   }
-  fmt.Println(commands["rb"])
+  fmt.Println(commands[args[1]])
+  return nil
+}
+
+func main() {
+  if err := start(os.Args); err != nil {
+    log.Fatal(err)
+  }
 }
