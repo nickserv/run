@@ -1,6 +1,7 @@
 package main
 
 import (
+  "errors"
   "testing"
   . "github.com/franela/goblin"
 )
@@ -12,19 +13,23 @@ func Test(t *testing.T) {
     g.Describe(".command_for_file", func() {
       g.Describe("when a filename is given with a known extension", func() {
         g.It("should be a valid command", func() {
-          g.Assert(Run.command_for_file("hello.rb")).Equal("ruby hello.rb")
+          command, err := commandForFile("hello.rb")
+          g.Assert(command).Equal("ruby hello.rb")
+          g.Assert(err).Equal(nil)
         })
       })
 
       g.Describe("when a filename is given without a known extension", func() {
-        g.It("should be nil", func() {
-          g.Assert(Run.command_for_file("hello.unknown")).Equal(nil)
+        g.It("should return an error", func() {
+          _, err := commandForFile("hello.unknown")
+          g.Assert(err).Equal(errors.New("run could not determine how to run this file because it does not have a known extension"))
         })
       })
 
       g.Describe("when a filename is given without any extension", func() {
-        g.It("should be nil", func() {
-          g.Assert(Run.command_for_file("hello")).Equal(nil)
+        g.It("should return an error", func() {
+          _, err := commandForFile("hello")
+          g.Assert(err).Equal(errors.New("run could not determine how to run this file because it does not have a known extension"))
         })
       })
     })
