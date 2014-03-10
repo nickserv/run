@@ -49,7 +49,7 @@ func start(args []string) error {
   }
   command, err := commandForFile(args[1])
   if err != nil {
-    log.Fatal(err)
+    return err
   }
   fmt.Println(command)
   return nil
