@@ -8,6 +8,8 @@ import (
   "io/ioutil"
   "log"
   "os"
+  "path/filepath"
+  "strings"
 )
 
 type Commands map[string]string
@@ -27,15 +29,30 @@ func getCommands() (Commands, error) {
   return commands, nil
 }
 
+func commandForFile(path string) (string, error) {
+  commands, err := getCommands()
+  if err != nil {
+    return "", err
+  }
+
+  extension := strings.Replace(filepath.Ext(path), ".", "", -1)
+
+  if command := commands[extension]; command != "" {
+    return strings.Replace(command, "%", path, -1), nil
+  } else {
+    return "", errors.New("Run could not determine how to run this file because it does not have a known extension.")
+  }
+}
+
 func start(args []string) error {
   if len(args) <= 1 {
     return errors.New("No files given.")
   }
-  commands, err := getCommands()
+  command, err := commandForFile(args[1])
   if err != nil {
     log.Fatal(err)
   }
-  fmt.Println(commands[args[1]])
+  fmt.Println(command)
   return nil
 }
 
