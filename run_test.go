@@ -1,40 +1,42 @@
 package main
 
 import (
-  . "github.com/franela/goblin"
+  . "github.com/onsi/ginkgo"
+  . "github.com/onsi/gomega"
 
   "errors"
   "testing"
 )
 
 func Test(t *testing.T) {
-  g := Goblin(t)
+  RegisterFailHandler(Fail)
+  RunSpecs(t, "Run")
+}
 
-  g.Describe("Run", func() {
-    extensionError := errors.New("run could not determine how to run this file because it does not have a known extension")
+var _ = Describe("Run", func() {
+  extensionError := errors.New("run could not determine how to run this file because it does not have a known extension")
 
-    g.Describe(".command_for_file", func() {
-      g.Describe("when a filename is given with a known extension", func() {
-        g.It("should be a valid command", func() {
-          command, err := commandForFile("hello.rb")
-          g.Assert(command).Equal("ruby hello.rb")
-          g.Assert(err).Equal(nil)
-        })
+  Describe(".command_for_file", func() {
+    Context("when a filename is given with a known extension", func() {
+      It("should be a valid command", func() {
+        command, err := commandForFile("hello.rb")
+        Expect(command).To(Equal("ruby hello.rb"))
+        Expect(err).To(BeNil())
       })
+    })
 
-      g.Describe("when a filename is given without a known extension", func() {
-        g.It("should return an error", func() {
-          _, err := commandForFile("hello.unknown")
-          g.Assert(err).Equal(extensionError)
-        })
+    Context("when a filename is given without a known extension", func() {
+      It("should return an error", func() {
+        _, err := commandForFile("hello.unknown")
+        Expect(err).To(Equal(extensionError))
       })
+    })
 
-      g.Describe("when a filename is given without any extension", func() {
-        g.It("should return an error", func() {
-          _, err := commandForFile("hello")
-          g.Assert(err).Equal(extensionError)
-        })
+    Context("when a filename is given without any extension", func() {
+      It("should return an error", func() {
+        _, err := commandForFile("hello")
+        Expect(err).To(Equal(extensionError))
       })
     })
   })
-}
+})
