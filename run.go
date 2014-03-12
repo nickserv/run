@@ -8,6 +8,7 @@ import (
   "io/ioutil"
   "log"
   "os"
+  "os/exec"
   "path/filepath"
   "strings"
 )
@@ -54,7 +55,19 @@ func start(args []string) (string, error) {
 
 func main() {
   if command, err := start(os.Args); err == nil {
+    sections := strings.Split(command, " ")
+    name := sections[0]
+    args := sections[1:]
+
     fmt.Println(command)
+    cmd := exec.Command(name, args...)
+    var out bytes.Buffer
+    cmd.Stdout = &out
+    err := cmd.Run()
+    if err != nil {
+      log.Fatal(err)
+    }
+    fmt.Println(out.String())
   } else {
     log.Fatal(err)
   }
