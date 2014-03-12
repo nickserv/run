@@ -33,12 +33,14 @@ func callerDir() string {
 // getCommands gets a collection of the type commands from the data file
 // (commands.json).
 func getCommands() (commands, error) {
+  // Load the commands from the data file to a slice of bytes.
   var commands commands
   jsonStream, fileErr := ioutil.ReadFile(path.Join(callerDir(), "commands.json"))
   if fileErr != nil {
     return commands, fileErr
   }
 
+  // Parse the byte slice to get a map of type commands.
   jsonErr := json.Unmarshal(jsonStream, &commands)
   return commands, jsonErr
 }
@@ -55,6 +57,7 @@ func commandForFile(path string) (string, error) {
 
   extension := strings.Replace(filepath.Ext(path), ".", "", -1)
 
+  // Fill out the command template.
   if command, success := commands[extension]; success {
     return strings.Replace(command, "%", path, -1), nil
   }
@@ -67,10 +70,12 @@ func commandForFile(path string) (string, error) {
 //
 // TODO: Make this more efficient and don't hide the command's stderr.
 func runCommand(command string) {
+  // Separate the command into arguments for exec.Command.
   sections := strings.Split(command, " ")
   name := sections[0]
   args := sections[1:]
 
+  // Execute the command, showing its stdout or an error message.
   cmd := exec.Command(name, args...)
   var out bytes.Buffer
   cmd.Stdout = &out
