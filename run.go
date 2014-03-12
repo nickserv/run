@@ -9,7 +9,9 @@ import (
   "log"
   "os"
   "os/exec"
+  "path"
   "path/filepath"
+  "runtime"
   "strings"
 )
 
@@ -17,9 +19,14 @@ const version = "0.0.1"
 
 type commands map[string]string
 
+func callerDir() string {
+  _, callerFile, _, _ := runtime.Caller(1)
+  return path.Dir(callerFile)
+}
+
 func getCommands() (commands, error) {
   var commands commands
-  jsonStream, err := ioutil.ReadFile("./commands.json")
+  jsonStream, err := ioutil.ReadFile(path.Join(callerDir(), "commands.json"))
   if err != nil {
     return commands, err
   }
