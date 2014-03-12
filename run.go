@@ -46,6 +46,21 @@ func commandForFile(path string) (string, error) {
   return "", errors.New("run could not determine how to run this file because it does not have a known extension")
 }
 
+func runCommand(command string) {
+  sections := strings.Split(command, " ")
+  name := sections[0]
+  args := sections[1:]
+
+  cmd := exec.Command(name, args...)
+  var out bytes.Buffer
+  cmd.Stdout = &out
+  if err := cmd.Run(); err == nil {
+    fmt.Println(out.String())
+  } else {
+    log.Fatal(err)
+  }
+}
+
 func start(args []string) (string, error) {
   if len(args) <= 1 {
     return "", errors.New("no files given")
@@ -55,19 +70,8 @@ func start(args []string) (string, error) {
 
 func main() {
   if command, err := start(os.Args); err == nil {
-    sections := strings.Split(command, " ")
-    name := sections[0]
-    args := sections[1:]
-
     fmt.Println(command)
-    cmd := exec.Command(name, args...)
-    var out bytes.Buffer
-    cmd.Stdout = &out
-    err := cmd.Run()
-    if err != nil {
-      log.Fatal(err)
-    }
-    fmt.Println(out.String())
+    runCommand(command)
   } else {
     log.Fatal(err)
   }
