@@ -15,15 +15,23 @@ import (
   "strings"
 )
 
+// The current version number of Run. Run versions will be tagged in the git
+// repo, so this is merely provided as a convenience.
 const version = "0.0.1"
 
+// Represents a collection of supported commands as a map of file extensions
+// (strings) to commands (strings).
 type commands map[string]string
 
+// callerDir returns the directory of this source code file in Run's
+// implementation. Similar to __dir__ in Ruby.
 func callerDir() string {
   _, callerFile, _, _ := runtime.Caller(1)
   return path.Dir(callerFile)
 }
 
+// getCommands gets a collection of the type commands from the data file
+// (commands.json).
 func getCommands() (commands, error) {
   var commands commands
   jsonStream, fileErr := ioutil.ReadFile(path.Join(callerDir(), "commands.json"))
@@ -35,6 +43,10 @@ func getCommands() (commands, error) {
   return commands, jsonErr
 }
 
+// commandForFile returns the command that should be used to run the given file.
+// The beginning of the command depends on the extension of the file, while the
+// file path portion(s) of the command will automatically be substituted with
+// the given file path.
 func commandForFile(path string) (string, error) {
   commands, err := getCommands()
   if err != nil {
@@ -49,6 +61,11 @@ func commandForFile(path string) (string, error) {
   return "", errors.New("run could not determine how to run this file because it does not have a known extension")
 }
 
+// runCommand finds the appropriate command to run a file and executes it. For
+// now, this waits until a command completes and then shows all of its stdout at
+// once. If the command fails, a failure message will be displayed.
+//
+// TODO: Make this more efficient and don't hide the command's stderr.
 func runCommand(command string) {
   sections := strings.Split(command, " ")
   name := sections[0]
@@ -64,6 +81,10 @@ func runCommand(command string) {
   }
 }
 
+// start takes the command line args given to Run. It a filename is given as the
+// first argument, the command to run it is returned. Otherwise, it returns an
+// error. This mostly exists for testing purposes so that the args for main
+// won't need to be mocked.
 func start(args []string) (string, error) {
   if len(args) <= 1 {
     return "", errors.New("no files given")
@@ -71,6 +92,8 @@ func start(args []string) (string, error) {
   return commandForFile(args[1])
 }
 
+// main runs start and executes the resulting command if it succeeds. Otherwise,
+// it returns an error.
 func main() {
   if command, err := start(os.Args); err == nil {
     fmt.Println(command)
