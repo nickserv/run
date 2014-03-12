@@ -13,12 +13,12 @@ import (
   "strings"
 )
 
-const Version = "0.0.1"
+const version = "0.0.1"
 
-type Commands map[string]string
+type commands map[string]string
 
-func getCommands() (Commands, error) {
-  var commands Commands
+func getCommands() (commands, error) {
+  var commands commands
   jsonStream, err := ioutil.ReadFile("./commands.json")
   if err != nil {
     return commands, err

@@ -14,7 +14,7 @@ func Test(t *testing.T) {
 
 var _ = Describe("Run", func() {
   It("has a version number", func() {
-    Expect(Version).ToNot(BeNil())
+    Expect(version).ToNot(BeNil())
   })
 
   Describe(".commandForFile", func() {
