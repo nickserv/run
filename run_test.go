@@ -17,6 +17,14 @@ var _ = Describe("Run", func() {
     Expect(version).ToNot(BeNil())
   })
 
+  Describe(".getCommands", func() {
+    It("should get at least one command", func() {
+      commands, err := getCommands()
+      Expect(len(commands)).To(BeNumerically(">=", 1))
+      Expect(err).ToNot(HaveOccurred())
+    })
+  })
+
   Describe(".commandForFile", func() {
     Context("when a filename is given with a known extension", func() {
       It("should be a valid command", func() {
