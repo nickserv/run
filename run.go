@@ -26,17 +26,13 @@ func callerDir() string {
 
 func getCommands() (commands, error) {
   var commands commands
-  jsonStream, err := ioutil.ReadFile(path.Join(callerDir(), "commands.json"))
-  if err != nil {
-    return commands, err
+  jsonStream, fileErr := ioutil.ReadFile(path.Join(callerDir(), "commands.json"))
+  if fileErr != nil {
+    return commands, fileErr
   }
 
-  decoder := json.NewDecoder(bytes.NewReader(jsonStream))
-  if err := decoder.Decode(&commands); err != nil {
-    return commands, err
-  }
-
-  return commands, nil
+  jsonErr := json.Unmarshal(jsonStream, &commands)
+  return commands, jsonErr
 }
 
 func commandForFile(path string) (string, error) {
@@ -47,7 +43,7 @@ func commandForFile(path string) (string, error) {
 
   extension := strings.Replace(filepath.Ext(path), ".", "", -1)
 
-  if command := commands[extension]; command != "" {
+  if command, success := commands[extension]; success {
     return strings.Replace(command, "%", path, -1), nil
   }
   return "", errors.New("run could not determine how to run this file because it does not have a known extension")
