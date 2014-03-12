@@ -19,10 +19,6 @@ import (
 // repo, so this is merely provided as a convenience.
 const version = "0.0.1"
 
-// Represents a collection of supported commands as a map of file extensions
-// (strings) to commands (strings).
-type commands map[string]string
-
 // callerDir returns the directory of this source code file in Run's
 // implementation. Similar to __dir__ in Ruby.
 func callerDir() string {
@@ -30,11 +26,12 @@ func callerDir() string {
   return path.Dir(callerFile)
 }
 
-// getCommands gets a collection of the type commands from the data file
-// (commands.json).
-func getCommands() (commands, error) {
+// getCommands gets the collection of supported commands. This is represented as
+// a map of file extensions (strings) to commands (strings), loaded from the
+// data file (commands.json).
+func getCommands() (map[string]string, error) {
   // Load the commands from the data file to a slice of bytes.
-  var commands commands
+  var commands map[string]string
   jsonStream, fileErr := ioutil.ReadFile(path.Join(callerDir(), "commands.json"))
   if fileErr != nil {
     return commands, fileErr
