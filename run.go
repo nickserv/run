@@ -87,7 +87,7 @@ func runCommand(command string) {
 // first argument, the command to run it is returned. Otherwise, it returns an
 // error. This mostly exists for testing purposes so that the args for main
 // won't need to be mocked.
-func start(args []string) (string, error) {
+func start(args ...string) (string, error) {
   if len(args) <= 1 {
     return "", errors.New("no files given")
   }
@@ -97,7 +97,7 @@ func start(args []string) (string, error) {
 // main runs start and executes the resulting command if it succeeds. Otherwise,
 // it returns an error.
 func main() {
-  if command, err := start(os.Args); err == nil {
+  if command, err := start(os.Args...); err == nil {
     fmt.Println(command)
     runCommand(command)
   } else {
