@@ -19,13 +19,6 @@ import (
 // repo, so this is merely provided as a convenience.
 const version = "0.0.1"
 
-// Handles an error (if one exists) by logging a fatal message.
-func handle(err error) {
-  if err != nil {
-    log.Fatal(err)
-  }
-}
-
 // callerDir returns the directory of this source code file in Run's
 // implementation. Similar to __dir__ in Ruby.
 func callerDir() string {
@@ -73,17 +66,18 @@ func commandForFile(path string) (string, error) {
 // once. If the command fails, a failure message will be displayed.
 //
 // TODO: Make this more efficient and don't hide the command's stderr.
-func runCommand(command string) {
+func runCommand(command string) error {
   // Separate the command into arguments for syscall.Exec.
   args := strings.Split(command, " ")
 
   // Get the path to the binary.
-  binary, lookErr := exec.LookPath(args[0])
-  handle(lookErr)
+  binary, err := exec.LookPath(args[0])
+  if err != nil {
+    return err
+  }
 
   // Execute the command, replacing the current process with it.
-  execErr := syscall.Exec(binary, args, os.Environ())
-  handle(execErr)
+  return syscall.Exec(binary, args, os.Environ())
 }
 
 // start takes the command line args given to Run. It a filename is given as the
@@ -101,7 +95,9 @@ func start(args ...string) (string, error) {
 // it returns an error.
 func main() {
   command, err := start(os.Args...)
-  handle(err)
+  if err != nil {
+    log.Fatal(err)
+  }
 
   fmt.Println(command)
   runCommand(command)
