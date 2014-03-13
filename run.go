@@ -20,6 +20,23 @@ import (
 // repo, so this is merely provided as a convenience.
 const version = "0.1.0"
 
+// The collection of supported commands. This is represented as a map of file
+// extensions (strings) to commands (strings).
+var commands = map[string]string {
+  "c": "gcc % && ./a.out",
+  "clj": "clj %",
+  "coffee": "coffee %",
+  "go": "go run %",
+  "hs": "runhaskell %",
+  "jar": "java -jar %",
+  "lua": "lua %",
+  "ml": "ocaml %",
+  "py": "python %",
+  "rb": "ruby %",
+  "sh": "sh %",
+  "zsh": "zsh %",
+}
+
 // callerDir returns the directory of this source code file in Run's
 // implementation. Similar to __dir__ in Ruby.
 func callerDir() string {
@@ -48,11 +65,6 @@ func getCommands() (map[string]string, error) {
 // file path portion(s) of the command will automatically be substituted with
 // the given file path.
 func commandForFile(path string) (string, error) {
-  commands, err := getCommands()
-  if err != nil {
-    return "", err
-  }
-
   extension := strings.Replace(filepath.Ext(path), ".", "", -1)
 
   // Fill out the command template.
