@@ -3,6 +3,7 @@ package main
 import (
   "encoding/json"
   "errors"
+  "flag"
   "fmt"
   "io/ioutil"
   "log"
@@ -83,20 +84,28 @@ func runCommand(command string) error {
 // error. This mostly exists for testing purposes so that the args for main
 // won't need to be mocked.
 func start(args ...string) (string, error) {
-  if len(args) <= 1 {
+  if len(args) == 0 {
     return "", errors.New("no files given")
   }
-  return commandForFile(args[1])
+  return commandForFile(args[0])
 }
 
 // main runs start and executes the resulting command if it succeeds. Otherwise,
 // it returns an error.
 func main() {
-  command, err := start(os.Args...)
+  verbosePtr := flag.Bool("verbose", false, "displays information on all commands that are run, whether or not they are successful")
+  dryRunPtr := flag.Bool("dry-run", false, "don't actually run the file, just show any error messages and verbose messages from Run")
+  flag.Parse()
+
+  command, err := start(flag.Args()...)
   if err != nil {
     log.Fatal(err)
   }
 
-  fmt.Println(command)
-  runCommand(command)
+  if *verbosePtr {
+    fmt.Println(command)
+  }
+  if !*dryRunPtr {
+    runCommand(command)
+  }
 }
