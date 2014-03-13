@@ -1,7 +1,6 @@
 package main
 
 import (
-  "bytes"
   "encoding/json"
   "errors"
   "fmt"
@@ -13,6 +12,7 @@ import (
   "path/filepath"
   "runtime"
   "strings"
+  "syscall"
 )
 
 // The current version number of Run. Run versions will be tagged in the git
@@ -67,19 +67,18 @@ func commandForFile(path string) (string, error) {
 //
 // TODO: Make this more efficient and don't hide the command's stderr.
 func runCommand(command string) {
-  // Separate the command into arguments for exec.Command.
-  sections := strings.Split(command, " ")
-  name := sections[0]
-  args := sections[1:]
+  // Separate the command into arguments for syscall.Exec.
+  args := strings.Split(command, " ")
 
-  // Execute the command, showing its stdout or an error message.
-  cmd := exec.Command(name, args...)
-  var out bytes.Buffer
-  cmd.Stdout = &out
-  if err := cmd.Run(); err == nil {
-    fmt.Println(out.String())
-  } else {
-    log.Fatal(err)
+  // Get the path to the binary.
+  binary, lookErr := exec.LookPath(args[0])
+  if lookErr != nil {
+    log.Fatal(lookErr)
+  }
+
+  // Execute the command, replacing the current process with it.
+  if execErr := syscall.Exec(binary, args, os.Environ()); execErr != nil {
+    log.Fatal(execErr)
   }
 }
 
