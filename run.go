@@ -17,7 +17,7 @@ import (
 
 // The current version number of Run. Run versions will be tagged in the git
 // repo, so this is merely provided as a convenience.
-const version = "0.0.1"
+const version = "0.1.0"
 
 // callerDir returns the directory of this source code file in Run's
 // implementation. Similar to __dir__ in Ruby.
