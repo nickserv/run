@@ -19,6 +19,13 @@ import (
 // repo, so this is merely provided as a convenience.
 const version = "0.0.1"
 
+// Handles an error (if one exists) by logging a fatal message.
+func handle(err error) {
+  if err != nil {
+    log.Fatal(err)
+  }
+}
+
 // callerDir returns the directory of this source code file in Run's
 // implementation. Similar to __dir__ in Ruby.
 func callerDir() string {
@@ -72,14 +79,11 @@ func runCommand(command string) {
 
   // Get the path to the binary.
   binary, lookErr := exec.LookPath(args[0])
-  if lookErr != nil {
-    log.Fatal(lookErr)
-  }
+  handle(lookErr)
 
   // Execute the command, replacing the current process with it.
-  if execErr := syscall.Exec(binary, args, os.Environ()); execErr != nil {
-    log.Fatal(execErr)
-  }
+  execErr := syscall.Exec(binary, args, os.Environ())
+  handle(execErr)
 }
 
 // start takes the command line args given to Run. It a filename is given as the
@@ -96,10 +100,9 @@ func start(args ...string) (string, error) {
 // main runs start and executes the resulting command if it succeeds. Otherwise,
 // it returns an error.
 func main() {
-  if command, err := start(os.Args...); err == nil {
-    fmt.Println(command)
-    runCommand(command)
-  } else {
-    log.Fatal(err)
-  }
+  command, err := start(os.Args...)
+  handle(err)
+
+  fmt.Println(command)
+  runCommand(command)
 }
