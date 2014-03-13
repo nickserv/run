@@ -44,13 +44,12 @@ func callerDir() string {
   return path.Dir(callerFile)
 }
 
-// getCommands gets the collection of supported commands. This is represented as
-// a map of file extensions (strings) to commands (strings), loaded from the
-// data file (commands.json).
-func getCommands() (map[string]string, error) {
+// getCommands gets a collection of commands from a JSON config file. This is
+// represented as a map of file extensions (strings) to commands (strings).
+func getCommands(file string) (map[string]string, error) {
   // Load the commands from the data file to a slice of bytes.
   var commands map[string]string
-  jsonStream, fileErr := ioutil.ReadFile(path.Join(callerDir(), "commands.json"))
+  jsonStream, fileErr := ioutil.ReadFile(file)
   if fileErr != nil {
     return commands, fileErr
   }

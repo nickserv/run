@@ -4,6 +4,7 @@ import (
   . "github.com/onsi/ginkgo"
   . "github.com/onsi/gomega"
 
+  "path"
   "testing"
 )
 
@@ -21,7 +22,7 @@ var _ = Describe("Run", func() {
 
   Describe(".getCommands", func() {
     It("should get at least one command", func() {
-      commands, err := getCommands()
+      commands, err := getCommands(path.Join(callerDir(), "commands.json"))
       Expect(len(commands)).To(BeNumerically(">=", 1))
       Expect(err).ToNot(HaveOccurred())
     })
