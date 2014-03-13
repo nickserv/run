@@ -84,10 +84,10 @@ func runCommand(command string) error {
 // error. This mostly exists for testing purposes so that the args for main
 // won't need to be mocked.
 func start(args ...string) (string, error) {
-  if len(args) == 0 {
+  if len(args) <= 1 {
     return "", errors.New("no files given")
   }
-  return commandForFile(args[0])
+  return commandForFile(args[1])
 }
 
 // main runs start and executes the resulting command if it succeeds. Otherwise,
@@ -97,7 +97,8 @@ func main() {
   dryRunPtr := flag.Bool("dry-run", false, "don't actually run the file, just show any error messages and verbose messages from Run")
   flag.Parse()
 
-  command, err := start(flag.Args()...)
+  args := append([]string{os.Args[0]}, flag.Args()...)
+  command, err := start(args...)
   if err != nil {
     log.Fatal(err)
   }
