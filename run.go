@@ -61,11 +61,9 @@ func commandForFile(path string) (string, error) {
   return "", errors.New("run could not determine how to run this file because it does not have a known extension")
 }
 
-// runCommand finds the appropriate command to run a file and executes it. For
-// now, this waits until a command completes and then shows all of its stdout at
-// once. If the command fails, a failure message will be displayed.
-//
-// TODO: Make this more efficient and don't hide the command's stderr.
+// runCommand finds the appropriate command to run a file and executes it,
+// replacing the current process. If the command fails, an error will be
+// returned.
 func runCommand(command string) error {
   // Separate the command into arguments for syscall.Exec.
   args := strings.Split(command, " ")
