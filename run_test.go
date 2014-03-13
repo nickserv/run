@@ -21,9 +21,10 @@ var _ = Describe("Run", func() {
   })
 
   Describe(".getCommands", func() {
-    It("should get at least one command", func() {
-      commands, err := getCommands(path.Join(callerDir(), "commands.json"))
-      Expect(len(commands)).To(BeNumerically(">=", 1))
+    It("should properly parse a JSON config file", func() {
+      commands, err := getCommands(path.Join(callerDir(), "mock_commands.json"))
+      expectedCommands := map[string]string { "one": "two", "three": "four" }
+      Expect(commands).To(Equal(expectedCommands));
       Expect(err).ToNot(HaveOccurred())
     })
   })
