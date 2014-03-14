@@ -20,11 +20,11 @@ var _ = Describe("Run", func() {
     Expect(version).ToNot(BeNil())
   })
 
-  Describe(".getCommands", func() {
+  Describe(".getLanguages", func() {
     It("should properly parse a JSON config file", func() {
-      commands, err := getCommands(path.Join(callerDir(), "mock_commands.json"))
-      expectedCommands := map[string]string { "one": "two", "three": "four" }
-      Expect(commands).To(Equal(expectedCommands));
+      languages, err := getLanguages(path.Join(callerDir(), "mock_commands.json"))
+      expectedLanguages := languageCollection { "one": "two", "three": "four" }
+      Expect(languages).To(Equal(expectedLanguages));
       Expect(err).ToNot(HaveOccurred())
     })
   })
@@ -85,18 +85,18 @@ var _ = Describe("Run", func() {
   })
 
   Describe(".merge", func() {
-    It("should successfully merge two maps", func() {
-      map1 := map[string]string {
+    It("should successfully merge two languageCollections", func() {
+      map1 := languageCollection {
         "a": "1",
         "b": "nope",
       }
 
-      map2 := map[string]string {
+      map2 := languageCollection {
         "b": "2",
         "c": "3",
       }
 
-      expectedMap := map[string]string {
+      expectedMap := languageCollection {
         "a": "1",
         "b": "2",
         "c": "3",

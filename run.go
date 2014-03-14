@@ -20,9 +20,12 @@ import (
 // repo, so this is merely provided as a convenience.
 const version = "0.1.0"
 
-// The collection of supported commands. This is represented as a map of file
-// extensions (strings) to commands (strings).
-var commands = map[string]string {
+// A collection of information about different languages. This is represented as
+// a map of file extensions (strings) to commands (strings).
+type languageCollection map[string]string
+
+// The default languageCollection included with Run.
+var defaultLanguages = languageCollection {
   "c": "gcc % && ./a.out",
   "clj": "clj %",
   "coffee": "coffee %",
@@ -44,19 +47,19 @@ func callerDir() string {
   return path.Dir(callerFile)
 }
 
-// getCommands gets a collection of commands from a JSON config file. This is
+// getLanguages gets a languageCollection from a JSON config file. This is
 // represented as a map of file extensions (strings) to commands (strings).
-func getCommands(file string) (map[string]string, error) {
-  // Load the commands from the data file to a slice of bytes.
-  var commands map[string]string
+func getLanguages(file string) (languageCollection, error) {
+  // Load the languages from the data file to a slice of bytes.
+  var languages languageCollection
   jsonStream, fileErr := ioutil.ReadFile(file)
   if fileErr != nil {
-    return commands, fileErr
+    return languages, fileErr
   }
 
-  // Parse the byte slice to get a map of type commands.
-  jsonErr := json.Unmarshal(jsonStream, &commands)
-  return commands, jsonErr
+  // Parse the byte slice to get a value of type languageCollection.
+  jsonErr := json.Unmarshal(jsonStream, &languages)
+  return languages, jsonErr
 }
 
 // commandForFile returns the command that should be used to run the given file.
@@ -67,7 +70,7 @@ func commandForFile(path string) (string, error) {
   extension := strings.Replace(filepath.Ext(path), ".", "", -1)
 
   // Fill out the command template.
-  if command, success := commands[extension]; success {
+  if command, success := defaultLanguages[extension]; success {
     return strings.Replace(command, "%", path, -1), nil
   }
   return "", fmt.Errorf("run %s: could not determine how to run the file because \"%s\" is not a known extension", path, extension)
@@ -103,18 +106,18 @@ func start(args ...string) (string, error) {
 
 // merge merges the contents of map2 into map1, using map1 as the default
 // values.
-func merge(map1 map[string]string, map2 map[string]string) {
+func merge(map1 languageCollection, map2 languageCollection) {
   for key, value := range map2 {
     map1[key] = value
   }
 }
 
-// printCommands prints the given map of commands in the following format.
+// printLanguages prints the given language collection in the following format.
 //
 //   extension: command
 //   extension: command
-func printCommands(commands map[string]string) {
-  for extension, command := range commands {
+func printLanguages(languages languageCollection) {
+  for extension, command := range languages {
     fmt.Printf("%s: %s\n", extension, command)
   }
 }
@@ -124,13 +127,13 @@ func printCommands(commands map[string]string) {
 func main() {
   verbosePtr := flag.Bool("verbose", false, "displays information on all commands that are run, whether or not they are successful")
   dryRunPtr := flag.Bool("dry-run", false, "don't actually run the file, just show any error messages and verbose messages from Run")
-  listPtr := flag.Bool("list", false, "list all supported extensions and commands and stop")
+  listPtr := flag.Bool("list", false, "list all known language information (extensions and commands) and stop")
   flag.Parse()
 
   if *listPtr {
     fmt.Println("Note that every % will be replaced with the given filename.")
     fmt.Println()
-    printCommands(commands)
+    printLanguages(defaultLanguages)
     os.Exit(0)
   }
 
