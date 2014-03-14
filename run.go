@@ -70,7 +70,7 @@ func commandForFile(path string) (string, error) {
   if command, success := commands[extension]; success {
     return strings.Replace(command, "%", path, -1), nil
   }
-  return "", errors.New("run could not determine how to run this file because it does not have a known extension")
+  return "", fmt.Errorf("run %s: could not determine how to run the file because \"%s\" is not a known extension", path, extension)
 }
 
 // runCommand finds the appropriate command to run a file and executes it,
@@ -96,7 +96,7 @@ func runCommand(command string) error {
 // won't need to be mocked.
 func start(args ...string) (string, error) {
   if len(args) <= 1 {
-    return "", errors.New("no files given")
+    return "", errors.New("run: no files given to run")
   }
   return commandForFile(args[1])
 }
