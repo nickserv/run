@@ -109,12 +109,30 @@ func merge(map1 map[string]string, map2 map[string]string) {
   }
 }
 
+// printCommands prints the given map of commands in the following format.
+//
+//   extension: command
+//   extension: command
+func printCommands(commands map[string]string) {
+  for extension, command := range commands {
+    fmt.Printf("%s: %s\n", extension, command)
+  }
+}
+
 // main runs start and executes the resulting command if it succeeds. Otherwise,
 // it returns an error.
 func main() {
   verbosePtr := flag.Bool("verbose", false, "displays information on all commands that are run, whether or not they are successful")
   dryRunPtr := flag.Bool("dry-run", false, "don't actually run the file, just show any error messages and verbose messages from Run")
+  listPtr := flag.Bool("list", false, "list all supported extensions and commands and stop")
   flag.Parse()
+
+  if *listPtr {
+    fmt.Println("Note that every % will be replaced with the given filename.")
+    fmt.Println()
+    printCommands(commands)
+    os.Exit(0)
+  }
 
   args := append([]string{os.Args[0]}, flag.Args()...)
   command, err := start(args...)
