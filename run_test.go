@@ -5,16 +5,8 @@ import (
   . "github.com/onsi/gomega"
 
   "path"
-  "testing"
 )
 
-// Set up the "go test" command.
-func Test(t *testing.T) {
-  RegisterFailHandler(Fail)
-  RunSpecs(t, "Run")
-}
-
-// Implement the specs.
 var _ = Describe("Run", func() {
   It("has a version number", func() {
     Expect(version).ToNot(BeNil())
