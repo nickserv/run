@@ -101,6 +101,14 @@ func start(args ...string) (string, error) {
   return commandForFile(args[1])
 }
 
+// merge merges the contents of map2 into map1, using map1 as the default
+// values.
+func merge(map1 map[string]string, map2 map[string]string) {
+  for key, value := range map2 {
+    map1[key] = value
+  }
+}
+
 // main runs start and executes the resulting command if it succeeds. Otherwise,
 // it returns an error.
 func main() {

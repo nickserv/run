@@ -83,4 +83,27 @@ var _ = Describe("Run", func() {
       })
     })
   })
+
+  Describe(".merge", func() {
+    It("should successfully merge two maps", func() {
+      map1 := map[string]string {
+        "a": "1",
+        "b": "nope",
+      }
+
+      map2 := map[string]string {
+        "b": "2",
+        "c": "3",
+      }
+
+      expectedMap := map[string]string {
+        "a": "1",
+        "b": "2",
+        "c": "3",
+      }
+
+      merge(map1, map2)
+      Expect(map1).To(Equal(expectedMap))
+    })
+  })
 })
