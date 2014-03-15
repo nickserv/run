@@ -1,4 +1,10 @@
 {
-  "one": "two",
-  "three": "four"
+  "uno": {
+    "extension": "one",
+    "command": "two"
+  },
+  "dos": {
+    "extension": "three",
+    "command": "four"
+  }
 }

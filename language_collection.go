@@ -6,6 +6,18 @@ import(
   "strings"
 )
 
+// commandForExtension returns the command template used to execute a file with
+// a given extension. The second return value is true if and only if an
+// appropriate command is found.
+func (languages languageCollection) commandForExtension(extension string) (string, bool) {
+  for _, language := range languages {
+    if language.Extension == extension {
+      return language.Command, true
+    }
+  }
+  return "", false
+}
+
 // commandForFile returns the command that should be used to run the given file.
 // The beginning of the command depends on the extension of the file, while the
 // file path portion(s) of the command will automatically be substituted with
@@ -14,7 +26,7 @@ func (languages languageCollection) commandForFile(path string) (string, error) 
   extension := strings.Replace(filepath.Ext(path), ".", "", -1)
 
   // Fill out the command template.
-  if command, success := languages[extension]; success {
+  if command, success := languages.commandForExtension(extension); success {
     return strings.Replace(command, "%", path, -1), nil
   }
   return "", fmt.Errorf("run %s: could not determine how to run the file because \"%s\" is not a known extension", path, extension)

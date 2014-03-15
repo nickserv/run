@@ -15,7 +15,10 @@ var _ = Describe("Run", func() {
   Describe(".getLanguages", func() {
     It("should properly parse a JSON config file", func() {
       languages, err := getLanguages(path.Join(callerDir(), "mock_commands.json"))
-      expectedLanguages := languageCollection { "one": "two", "three": "four" }
+      expectedLanguages := languageCollection {
+        "uno": language{"one", "two"},
+        "dos": language{"three", "four"},
+      }
       Expect(languages).To(Equal(expectedLanguages));
       Expect(err).ToNot(HaveOccurred())
     })

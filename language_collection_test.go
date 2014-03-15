@@ -33,19 +33,19 @@ var _ = Describe("languageCollection", func() {
   Describe(".merge", func() {
     It("should successfully merge two languageCollections", func() {
       languages := languageCollection {
-        "a": "1",
-        "b": "nope",
+        "x": language{"a", "1"},
+        "y": language{"b", "nope"},
       }
 
       otherLanguages := languageCollection {
-        "b": "2",
-        "c": "3",
+        "y": language{"b", "2"},
+        "z": language{"c", "3"},
       }
 
       expectedLanguages := languageCollection {
-        "a": "1",
-        "b": "2",
-        "c": "3",
+        "x": language{"a", "1"},
+        "y": language{"b", "2"},
+        "z": language{"c", "3"},
       }
 
       languages.merge(otherLanguages)

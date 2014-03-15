@@ -20,23 +20,32 @@ import (
 const version = "0.1.0"
 
 // A collection of information about different languages. This is represented as
-// a map of file extensions (strings) to commands (strings).
-type languageCollection map[string]string
+// a map from language names (strings) to language structs.
+type languageCollection map[string]language
+
+// A language struct represents the information that Run knows about any
+// executable language. Extension represents the main file extension for files
+// written in this language. Command represents the command template used to run
+// files of this type, with a "%" representing the appropriate filename.
+type language struct {
+  Extension string
+  Command string
+}
 
 // The default languageCollection included with Run.
 var defaultLanguages = languageCollection {
-  "c": "gcc % && ./a.out",
-  "clj": "clj %",
-  "coffee": "coffee %",
-  "go": "go run %",
-  "hs": "runhaskell %",
-  "jar": "java -jar %",
-  "lua": "lua %",
-  "ml": "ocaml %",
-  "py": "python %",
-  "rb": "ruby %",
-  "sh": "sh %",
-  "zsh": "zsh %",
+  "c": language{"c", "gcc % && ./a.out"},
+  "clojure": language{"clj", "clj %"},
+  "coffeescript": language{"coffee", "coffee %"},
+  "go": language{"go", "go run %"},
+  "haskell": language{"hs", "runhaskell %"},
+  "java jar": language{"jar", "java -jar %"},
+  "lua": language{"lua", "lua %"},
+  "ocaml": language{"ml", "ocaml %"},
+  "python": language{"py", "python %"},
+  "ruby": language{"rb", "ruby %"},
+  "sh": language{"sh", "sh %"},
+  "zsh": language{"zsh", "zsh %"},
 }
 
 // callerDir returns the directory of this source code file in Run's
