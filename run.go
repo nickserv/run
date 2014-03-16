@@ -2,7 +2,6 @@ package main
 
 import (
   "encoding/json"
-  "errors"
   "flag"
   "fmt"
   "io/ioutil"
@@ -87,17 +86,6 @@ func runCommand(command string) error {
   return syscall.Exec(binary, args, os.Environ())
 }
 
-// start takes the command line args given to Run. It a filename is given as the
-// first argument, the command to run it is returned. Otherwise, it returns an
-// error. This mostly exists for testing purposes so that the args for main
-// won't need to be mocked.
-func start(args ...string) (string, error) {
-  if len(args) == 0 {
-    return "", errors.New("run: no files given to run")
-  }
-  return defaultLanguages.commandForFile(args[0])
-}
-
 // main runs start and executes the resulting command if it succeeds. Otherwise,
 // it returns an error.
 func main() {
@@ -113,7 +101,11 @@ func main() {
     os.Exit(0)
   }
 
-  command, err := start(flag.Args()...)
+  if len(flag.Args()) == 0 {
+    log.Fatal("run: no files given to run")
+  }
+
+  command, err := defaultLanguages.commandForFile(flag.Args()[0])
   if err != nil {
     log.Fatal(err)
   }

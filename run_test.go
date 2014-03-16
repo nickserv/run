@@ -23,35 +23,4 @@ var _ = Describe("Run", func() {
       Expect(err).ToNot(HaveOccurred())
     })
   })
-
-  Describe(".start", func() {
-    Context("when a filename is given with a known extension", func() {
-      It("runs the file", func() {
-        command, err := start("hello.rb")
-        Expect(command).To(Equal("ruby hello.rb"))
-        Expect(err).ToNot(HaveOccurred())
-      })
-    })
-
-    Context("when a filename is given without a known extension", func() {
-      It("should return an error", func() {
-        _, err := start("hello.unknown")
-        Expect(err).To(HaveOccurred())
-      })
-    })
-
-    Context("when a filename is given without any extension", func() {
-      It("should return an error", func() {
-        _, err := start("hello")
-        Expect(err).To(HaveOccurred())
-      })
-    })
-
-    Context("when no filename is given", func() {
-      It("should return an error", func() {
-        _, err := start()
-        Expect(err).To(HaveOccurred())
-      })
-    })
-  })
 })
