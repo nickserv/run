@@ -92,10 +92,10 @@ func runCommand(command string) error {
 // error. This mostly exists for testing purposes so that the args for main
 // won't need to be mocked.
 func start(args ...string) (string, error) {
-  if len(args) <= 1 {
+  if len(args) == 0 {
     return "", errors.New("run: no files given to run")
   }
-  return defaultLanguages.commandForFile(args[1])
+  return defaultLanguages.commandForFile(args[0])
 }
 
 // main runs start and executes the resulting command if it succeeds. Otherwise,
@@ -113,8 +113,7 @@ func main() {
     os.Exit(0)
   }
 
-  args := append([]string{os.Args[0]}, flag.Args()...)
-  command, err := start(args...)
+  command, err := start(flag.Args()...)
   if err != nil {
     log.Fatal(err)
   }
