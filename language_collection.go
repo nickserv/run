@@ -32,6 +32,18 @@ func (languages languageCollection) commandForFile(path string) (string, error) 
   return "", fmt.Errorf("run %s: could not determine how to run the file because \"%s\" is not a known extension", path, extension)
 }
 
+// commandForFileAndLanguage returns the command that should be used to run the
+// given file with the given language. The beginning of the command depends on
+// the extension of the file, while the file path portion(s) of the command will
+// automatically be substituted with the given file path.
+func (languages languageCollection) commandForFileAndLanguage(path string, languageName string) (string, error) {
+  // Fill out the command template.
+  if language, success := languages[languageName]; success {
+    return strings.Replace(language.Command, "%", path, -1), nil
+  }
+  return "", fmt.Errorf("run %s: could not determine how to run the file because \"%s\" is not a known language", path, languageName)
+}
+
 // merge merges the contents of map2 into map1, using map1 as the default
 // values.
 func (languages languageCollection) merge(otherLanguages languageCollection) {

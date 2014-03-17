@@ -30,6 +30,23 @@ var _ = Describe("languageCollection", func() {
     })
   })
 
+  Describe(".commandForFileAndLanguage", func() {
+    Context("when a filename is given with a known language", func() {
+      It("should be a valid command", func() {
+        command, err := defaultLanguages.commandForFileAndLanguage("hello", "ruby")
+        Expect(command).To(Equal("ruby hello"))
+        Expect(err).ToNot(HaveOccurred())
+      })
+    })
+
+    Context("when a filename is given without a known language", func() {
+      It("should return an error", func() {
+        _, err := defaultLanguages.commandForFileAndLanguage("hello", "english")
+        Expect(err).To(HaveOccurred())
+      })
+    })
+  })
+
   Describe(".merge", func() {
     It("should successfully merge two languageCollections", func() {
       languages := languageCollection {

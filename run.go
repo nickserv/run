@@ -89,6 +89,7 @@ func runCommand(command string) error {
 // main runs start and executes the resulting command if it succeeds. Otherwise,
 // it returns an error.
 func main() {
+  languagePtr := flag.String("language", "", "force a language to use instead of the given file's predicted language (if there is one)")
   verbosePtr := flag.Bool("verbose", false, "displays information on all commands that are run, whether or not they are successful")
   dryRunPtr := flag.Bool("dry-run", false, "don't actually run the file, just show any error messages and verbose messages from Run")
   listPtr := flag.Bool("list", false, "list all known language information (extensions and commands) and stop")
@@ -105,7 +106,14 @@ func main() {
     log.Fatal("run: no files given to run")
   }
 
-  command, err := defaultLanguages.commandForFile(flag.Args()[0])
+  file := flag.Args()[0]
+  var command string
+  var err error
+  if *languagePtr == "" {
+    command, err = defaultLanguages.commandForFile(file)
+  } else {
+    command, err = defaultLanguages.commandForFileAndLanguage(file, *languagePtr)
+  }
   if err != nil {
     log.Fatal(err)
   }
