@@ -52,7 +52,7 @@ func (languages languageCollection) commandForFile(path string) (string, error) 
   if command, success := languages.commandForExtension(extension); success {
     return strings.Replace(command, "%", path, -1), nil
   }
-  return "", fmt.Errorf("run %s: could not determine how to run the file because \"%s\" is not a known extension", path, extension)
+  return "", fmt.Errorf(`run %s: could not determine how to run the file because "%s" is not a known extension`, path, extension)
 }
 
 // commandForFileAndLanguage returns the command that should be used to run the
@@ -64,7 +64,7 @@ func (languages languageCollection) commandForFileAndLanguage(path string, langu
   if command, success := languages.commandForLanguage(languageName); success {
     return strings.Replace(command, "%", path, -1), nil
   }
-  return "", fmt.Errorf("run %s: could not determine how to run the file because \"%s\" is not a known language", path, languageName)
+  return "", fmt.Errorf(`run %s: could not determine how to run the file because "%s" is not a known language`, path, languageName)
 }
 
 // merge merges the contents of map2 into map1, using map1 as the default
