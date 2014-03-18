@@ -18,19 +18,6 @@ import (
 // repo, so this is merely provided as a convenience.
 const version = "0.1.0"
 
-// A collection of information about different languages. This is represented as
-// a map from language names (strings) to language structs.
-type languageCollection map[string]language
-
-// A language struct represents the information that Run knows about any
-// executable language. Extension represents the main file extension for files
-// written in this language. Command represents the command template used to run
-// files of this type, with a "%" representing the appropriate filename.
-type language struct {
-  Extension string
-  Command string
-}
-
 // The default languageCollection included with Run.
 var defaultLanguages = languageCollection {
   "c": language{"c", "gcc % && ./a.out"},
