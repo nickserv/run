@@ -12,8 +12,12 @@ var _ = Describe("Run", func() {
     Expect(version).ToNot(BeNil())
   })
 
-  PDescribe("callerDir", func() {
-    PIt("should return the directory of this source code file in Run's implementation")
+  Describe("callerDir", func() {
+    It("should return the directory of this source code file in Run's implementation", func () {
+      // TODO: Ensure that "run" is at the end of the string, instead of
+      // anywhere.
+      Expect(callerDir()).To(ContainSubstring("run"))
+    })
   })
 
   Describe(".getLanguages", func() {
