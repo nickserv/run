@@ -31,6 +31,16 @@ func (languages languageCollection) commandForExtension(extension string) (strin
   return "", false
 }
 
+// commandForExtension returns the command template used to execute a file
+// written in a given language. The second return value is true if and only if
+// an appropriate command is found.
+func (languages languageCollection) commandForLanguage(languageName string) (string, bool) {
+  if language, success := languages[languageName]; success {
+    return language.Command, true
+  }
+  return "", false
+}
+
 // commandForFile returns the command that should be used to run the given file.
 // The beginning of the command depends on the extension of the file, while the
 // file path portion(s) of the command will automatically be substituted with
@@ -51,8 +61,8 @@ func (languages languageCollection) commandForFile(path string) (string, error) 
 // automatically be substituted with the given file path.
 func (languages languageCollection) commandForFileAndLanguage(path string, languageName string) (string, error) {
   // Fill out the command template.
-  if language, success := languages[languageName]; success {
-    return strings.Replace(language.Command, "%", path, -1), nil
+  if command, success := languages.commandForLanguage(languageName); success {
+    return strings.Replace(command, "%", path, -1), nil
   }
   return "", fmt.Errorf("run %s: could not determine how to run the file because \"%s\" is not a known language", path, languageName)
 }
