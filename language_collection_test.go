@@ -8,34 +8,34 @@ import (
 var _ = Describe("languageCollection", func() {
   Describe(".commandForExtension", func() {
     Context("when a known extension is given", func() {
-      It("should return success and the appropriate command", func() {
-        command, success := defaultLanguages.commandForExtension("rb")
+      It("should return the appropriate command", func() {
+        command, err := defaultLanguages.commandForExtension("rb")
         Expect(command).To(Equal("ruby %"))
-        Expect(success).To(BeTrue())
+        Expect(err).ToNot(HaveOccurred())
       })
     })
 
     Context("when an unknown extension is given", func() {
-      It("should not return success", func() {
-        _, success := defaultLanguages.commandForExtension("unknown")
-        Expect(success).To(BeFalse())
+      It("should return an error", func() {
+        _, err := defaultLanguages.commandForExtension("unknown")
+        Expect(err).To(HaveOccurred())
       })
     })
   })
 
   Describe(".commandForLanguage", func() {
     Context("when a known language is given", func() {
-      It("should return success and the appropriate command", func() {
-        command, success := defaultLanguages.commandForLanguage("ruby")
+      It("should return the appropriate command", func() {
+        command, err := defaultLanguages.commandForLanguage("ruby")
         Expect(command).To(Equal("ruby %"))
-        Expect(success).To(BeTrue())
+        Expect(err).ToNot(HaveOccurred())
       })
     })
 
     Context("when an unknown extension is given", func() {
-      It("should not return success", func() {
-        _, success := defaultLanguages.commandForLanguage("unknown")
-        Expect(success).To(BeFalse())
+      It("should return an error", func() {
+        _, err := defaultLanguages.commandForLanguage("unknown")
+        Expect(err).To(HaveOccurred())
       })
     })
   })
