@@ -6,6 +6,23 @@ import (
 )
 
 var _ = Describe("languageCollection", func() {
+  Describe(".commandForExtension", func() {
+    Context("when a known extension is given", func() {
+      It("should return success and the appropriate command", func() {
+        command, success := defaultLanguages.commandForExtension("rb")
+        Expect(command).To(Equal("ruby %"))
+        Expect(success).To(BeTrue())
+      })
+    })
+
+    Context("when an unknown extension is given", func() {
+      It("should not return success", func() {
+        _, success := defaultLanguages.commandForExtension("unknown")
+        Expect(success).To(BeFalse())
+      })
+    })
+  })
+
   Describe(".commandForFile", func() {
     Context("when a filename is given with a known extension", func() {
       It("should be a valid command", func() {
