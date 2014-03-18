@@ -86,4 +86,8 @@ var _ = Describe("languageCollection", func() {
       Expect(languages).To(Equal(expectedLanguages))
     })
   })
+
+  PDescribe(".string()", func() {
+    PIt("should show a correct string representation of the languageCollection")
+  })
 })
