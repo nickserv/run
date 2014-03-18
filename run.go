@@ -85,7 +85,7 @@ func main() {
   if *listPtr {
     fmt.Println("Note that every % will be replaced with the given filename.")
     fmt.Println()
-    fmt.Println(defaultLanguages.string())
+    fmt.Println(defaultLanguages)
     os.Exit(0)
   }
 

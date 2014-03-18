@@ -110,7 +110,7 @@ var _ = Describe("languageCollection", func() {
         "x": language{"a", "1"},
         "y": language{"b", "2"},
       }
-      Expect(languages.string()).To(Equal("x: 1\ny: 2\n"))
+      Expect(languages.String()).To(Equal("x: 1\ny: 2\n"))
     })
   })
 })

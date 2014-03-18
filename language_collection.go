@@ -69,11 +69,12 @@ func (languages languageCollection) merge(otherLanguages languageCollection) {
   }
 }
 
-// printLanguages prints the given language collection in the following format.
+// String shows a string representation of the given language collection in the
+// following format.
 //
 //   language: command
 //   language: command
-func (languages languageCollection) string() string {
+func (languages languageCollection) String() string {
   str := ""
   for extension, language := range languages {
     str = str + fmt.Sprintf("%s: %s\n", extension, language.Command)
