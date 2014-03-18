@@ -104,7 +104,13 @@ var _ = Describe("languageCollection", func() {
     })
   })
 
-  PDescribe(".string()", func() {
-    PIt("should show a correct string representation of the languageCollection")
+  Describe(".string", func() {
+    It("should show a correct string representation of the languageCollection", func() {
+      languages := languageCollection {
+        "x": language{"a", "1"},
+        "y": language{"b", "2"},
+      }
+      Expect(languages.string()).To(Equal("x: 1\ny: 2\n"))
+    })
   })
 })

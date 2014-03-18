@@ -71,12 +71,12 @@ func (languages languageCollection) merge(otherLanguages languageCollection) {
 
 // printLanguages prints the given language collection in the following format.
 //
-//   extension: command
-//   extension: command
+//   language: command
+//   language: command
 func (languages languageCollection) string() string {
   str := ""
-  for extension, command := range languages {
-    str = str + fmt.Sprintf("%s: %s\n", extension, command)
+  for extension, language := range languages {
+    str = str + fmt.Sprintf("%s: %s\n", extension, language.Command)
   }
   return str;
 }
