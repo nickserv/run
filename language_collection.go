@@ -31,7 +31,7 @@ func (languages languageCollection) commandForExtension(extension string) (strin
   return "", false
 }
 
-// commandForExtension returns the command template used to execute a file
+// commandForLanguage returns the command template used to execute a file
 // written in a given language. The second return value is true if and only if
 // an appropriate command is found.
 func (languages languageCollection) commandForLanguage(languageName string) (string, bool) {
