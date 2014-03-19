@@ -77,7 +77,7 @@ func (languages languageCollection) merge(otherLanguages languageCollection) {
 func (languages languageCollection) String() string {
   str := ""
   for extension, language := range languages {
-    str = str + fmt.Sprintf("%s: %s\n", extension, language.Command)
+    str += fmt.Sprintf("%s: %s\n", extension, language.Command)
   }
-  return str;
+  return str
 }
