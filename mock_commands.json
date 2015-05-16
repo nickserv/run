@@ -1,10 +1,10 @@
 {
-  "uno": {
-    "extension": "one",
-    "command": "two"
-  },
-  "dos": {
-    "extension": "three",
-    "command": "four"
-  }
+	"uno": {
+		"extension": "one",
+		"command": "two"
+	},
+	"dos": {
+		"extension": "three",
+		"command": "four"
+	}
 }
